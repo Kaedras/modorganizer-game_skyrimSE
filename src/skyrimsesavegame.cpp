@@ -1,6 +1,6 @@
 #include "skyrimsesavegame.h"
 
-#include <Windows.h>
+#include <utility.h>
 
 SkyrimSESaveGame::SkyrimSESaveGame(QString const& fileName, GameSkyrimSE const* game)
     : GamebryoSaveGame(fileName, game, true)
@@ -15,20 +15,14 @@ SkyrimSESaveGame::SkyrimSESaveGame(QString const& fileName, GameSkyrimSE const* 
   // A file time is a 64-bit value that represents the number of 100-nanosecond
   // intervals that have elapsed since 12:00 A.M. January 1, 1601 Coordinated Universal
   // Time (UTC). So we need to convert that to something useful
+  QDateTime dateTime = MOBase::fileTimeToQDateTime(ftime);
 
   // For some reason, the file time is off by about 6 hours.
-  // So we need to subtract those 6 hours from the filetime.
-  _ULARGE_INTEGER time;
-  time.LowPart  = ftime.dwLowDateTime;
-  time.HighPart = ftime.dwHighDateTime;
-  time.QuadPart -= 2.16e11;
-  ftime.dwHighDateTime = time.HighPart;
-  ftime.dwLowDateTime  = time.LowPart;
+  // So we need to subtract those 6 hours.
+  qint64 sixHours = 6 * 60 * 60;
+  dateTime        = dateTime.addSecs(-sixHours);
 
-  SYSTEMTIME ctime;
-  ::FileTimeToSystemTime(&ftime, &ctime);
-
-  setCreationTime(ctime);
+  setCreationTime(dateTime);
 }
 
 void SkyrimSESaveGame::fetchInformationFields(
