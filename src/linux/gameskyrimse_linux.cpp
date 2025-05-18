@@ -4,7 +4,7 @@ using namespace MOBase;
 
 QString GameSkyrimSE::identifyGamePath() const
 {
-  QString result = parseSteamLocation(steamAPPId(), gameShortName());
+  QString result = parseSteamLocation("489830", gameDirectoryName());
 
   // Check Epic Games Manifests
   // AppName: ac82db5035584c7f8a2c548d98c86b2c
