@@ -67,6 +67,11 @@ protected:
   void setVariant(QString variant);
 
   virtual QString identifyGamePath() const override;
+
+#ifdef __unix__
+  // returns the LocalAppData path inside the wine prefix
+  QString localAppFolder() const;
+#endif
 };
 
 #endif  // _GAMESKYRIMSE_H
