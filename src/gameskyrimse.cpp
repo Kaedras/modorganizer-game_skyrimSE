@@ -177,14 +177,14 @@ QList<PluginSetting> GameSkyrimSE::settings() const
 void GameSkyrimSE::initializeProfile(const QDir& path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
-    copyToProfile(localAppFolder() + "/" + gameDirectoryName(), path, "plugins.txt");
+    copyToProfile(localAppFolder() + "/" + gameDirectoryName(), path, "Plugins.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
     if (settings.testFlag(IPluginGame::PREFER_DEFAULTS) ||
         !QFileInfo(myGamesPath() + "/Skyrim.ini").exists()) {
       copyToProfile(gameDirectory().absolutePath(), path, "Skyrim_default.ini",
-                    "skyrim.ini");
+                    "Skyrim.ini");
     } else {
       copyToProfile(myGamesPath(), path, "Skyrim.ini");
     }
@@ -304,7 +304,7 @@ MappingType GameSkyrimSE::mappings() const
 {
   MappingType result;
 
-  for (const QString& profileFile : {"plugins.txt", "loadorder.txt"}) {
+  for (const QString& profileFile : {"Plugins.txt", "loadorder.txt"}) {
     result.push_back({m_Organizer->profilePath() + "/" + profileFile,
                       localAppFolder() + "/" + gameDirectoryName() + "/" + profileFile,
                       false});
